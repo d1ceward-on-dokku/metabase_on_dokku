@@ -1,3 +1,5 @@
+#!/bin/bash
+set -e
 
 # Function to parse a URL into its components
 parse_url() {
@@ -24,3 +26,5 @@ export MB_DB_PORT="$MB_DB_PORT"
 export MB_DB_DBNAME="$MB_DB_DATABASE"
 export MB_DB_USER="$MB_DB_USER"
 export MB_DB_PASS="$MB_DB_PASSWORD"
+
+exec /app/run_metabase.sh "$@"
