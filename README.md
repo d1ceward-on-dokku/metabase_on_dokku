@@ -1,23 +1,23 @@
-# Metabase on Dokku
+![](.github/images/repo_header.png)
 
-This repository provides everything you need to run [Metabase](https://github.com/metabase/metabase), an open-source business intelligence and analytics platform, on [Dokku](https://dokku.com/).
+[![Metabase](https://img.shields.io/badge/Metabase-0.56.11-blue.svg)](https://github.com/metabase/metabase/releases/tag/v0.56.11)
+[![Dokku](https://img.shields.io/badge/Dokku-Repo-blue.svg)](https://github.com/dokku/dokku)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/d1ceward-on-dokku/minio_on_dokku/graphs/commit-activity)
+# Run Metabase on Dokku
 
-## Quick Start (Docker)
+## Overview
 
-To run Metabase locally with Docker:
+This guide provides instructions on how to deploy Metabase, an open-source business intelligence tool, on a [Dokku](http://dokku.viewdocs.io/dokku/) server using a custom Dockerfile.
 
-```bash
-docker run -d -p 3000:3000 \
-  -e "MB_DB_TYPE=postgres" \
-  -e "MB_DB_DBNAME=metabaseappdb" \
-  -e "MB_DB_PORT=5432" \
-  -e "MB_DB_USER=name" \
-  -e "MB_DB_PASS=password" \
-  -e "MB_DB_HOST=my-database-host" \
-  --name metabase metabase/metabase
-```
+## Prerequisites
 
-## Deploying Metabase on Dokku
+Before proceeding, ensure you have the following:
+
+- A working [Dokku host](http://dokku.viewdocs.io/dokku/getting-started/installation/).
+- The [PostgreSQL plugin](https://github.com/dokku/dokku-postgres) installed on Dokku.
+- (Optional) The [Let's Encrypt plugin](https://github.com/dokku/dokku-letsencrypt) for SSL certificates.
+
+## Setup Instructions
 
 ### 1. Create the App
 
@@ -27,86 +27,24 @@ Log into your Dokku host and create the `metabase` app:
 dokku apps:create metabase
 ```
 
-### 2. Configure the Database
+### 2. Configure the App
 
-Install, create, and link a PostgreSQL database to the app:
+#### Install, Create, and Link PostgreSQL Plugin
 
-```bash
-# Install PostgreSQL plugin (if not already installed)
-dokku plugin:install https://github.com/dokku/dokku-postgres.git postgres
+1. Install the PostgreSQL plugin:
 
-# Create a PostgreSQL instance
-dokku postgres:create metabase
+    ```bash
+    dokku plugin:install https://github.com/dokku/dokku-postgres.git postgres
+    ```
 
-# Link the database to the app
-dokku postgres:link metabase metabase
-```
+2. Create a PostgreSQL service:
 
-### 3. Configure Persistent Storage (Optional)
+    ```bash
+    dokku postgres:create metabase
+    ```
 
-Metabase stores its application data in the database, but you may want to mount a volume for plugins or custom drivers:
+3. Link the PostgreSQL service to the app:
 
-```bash
-# Example: Mount a plugins directory
-dokku storage:ensure-directory metabase-plugins --chown false
-dokku storage:mount metabase /var/lib/dokku/data/storage/metabase-plugins:/plugins
-```
-
-### 4. Configure the Domain and Ports
-
-Set the domain for your app:
-
-```bash
-dokku domains:set metabase metabase.example.com
-```
-
-Map the internal port `3000` to the external port `80`:
-
-```bash
-dokku ports:set metabase http:80:3000
-```
-
-### 5. Deploy the App
-
-You can deploy the app to your Dokku server using one of the following methods:
-
-#### Option 1: Deploy Using `dokku git:sync`
-
-```bash
-dokku git:sync --build metabase https://github.com/d1ceward-on-dokku/metabase_on_dokku.git
-```
-
-#### Option 2: Clone the Repository and Push Manually
-
-```bash
-# Clone the repository
-git clone https://github.com/d1ceward-on-dokku/metabase_on_dokku.git
-cd metabase_on_dokku
-
-# Add your Dokku server as a remote
-git remote add dokku dokku@example.com:metabase
-
-# Push to Dokku
-git push dokku master
-```
-
-### 6. Enable SSL (Optional)
-
-Secure your app with Let's Encrypt:
-
-```bash
-# Install Let's Encrypt plugin (if not already installed)
-dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
-
-# Set contact email
-dokku letsencrypt:set metabase email you@example.com
-
-# Enable Let's Encrypt
-dokku letsencrypt:enable metabase
-```
-
-## Wrapping Up
-
-Your Metabase instance should now be running! Visit [http://metabase.example.com](http://metabase.example.com) (or your configured domain) to get started.
-
-Happy analyzing!
+    ```bash
+    dokku postgres:link metabase metabase
+    ```

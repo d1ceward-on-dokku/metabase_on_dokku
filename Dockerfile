@@ -1,8 +1,8 @@
 
-# Use the official Metabase image
-FROM metabase/metabase:latest
+ARG METABASE_VERSION="v0.56.11"
 
-# No custom entrypoint needed for Metabase
+FROM metabase/metabase:${METABASE_VERSION}}
 
-# Expose Metabase default port
-EXPOSE 3000
+COPY ./entrypoint.sh /custom-entrypoint.sh
+
+ENTRYPOINT ["/custom-entrypoint.sh"]
