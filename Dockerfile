@@ -1,7 +1,7 @@
 
 ARG METABASE_VERSION="v0.56.11"
 
-FROM metabase/metabase:${METABASE_VERSION}}
+FROM metabase/metabase:${METABASE_VERSION}
 
 COPY ./entrypoint.sh /custom-entrypoint.sh
 
