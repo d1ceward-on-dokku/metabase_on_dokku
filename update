@@ -1,0 +1,37 @@
+#!/bin/bash
+set -eo pipefail
+trap "exit" INT
+
+# Pull upstream changes
+echo -e "\033[0;32m====>\033[0m Pull origin..."
+git pull
+
+echo -e "\033[0;32m====>\033[0m Initial check..."
+
+# Get current release name
+CURRENT_RELEASE=$(git tag --sort=version:refname | tail -1)
+
+# Get latest Metabase release name
+RELEASE=$(curl -s https://api.github.com/repos/metabase/metabase/releases/latest | jq -r ".tag_name" | sed 's/v//g; s/\"//g')
+
+# Exit script if already up to date
+if [ $RELEASE = $CURRENT_RELEASE ]; then
+  echo -e "\033[0;32m=>\033[0m Already up to date..."
+  exit 0
+fi
+
+# Replace "from" or version line in Dockerfile with the new Metabase release
+sed -i "s#ARG METABASE_VERSION.*#ARG METABASE_VERSION=\"v${RELEASE}\"#" Dockerfile
+
+# Replace README badge/link to Metabase release
+METABASE_BADGE="[![Metabase](https://img.shields.io/badge/Metabase-${RELEASE}-blue.svg)](https://github.com/metabase/metabase/releases/tag/v${RELEASE})"
+sed -i "s#\[\!\[Metabase\].*#${METABASE_BADGE}#" README.md
+
+# # Push changes
+# git add Dockerfile README.md
+# git commit -m "Update to n8n version ${RELEASE}"
+# git push origin master
+
+# # Create tag
+# git tag $RELEASE
+# git push --tags
