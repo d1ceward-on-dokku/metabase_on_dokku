@@ -1,6 +1,6 @@
 ![](.github/images/repo_header.png)
 
-[![Metabase](https://img.shields.io/badge/Metabase-0.56.11-blue.svg)](https://github.com/metabase/metabase/releases/tag/v0.56.11)
+[![Metabase](https://img.shields.io/badge/Metabase-0.56.12-blue.svg)](https://github.com/metabase/metabase/releases/tag/v0.56.12)
 [![Dokku](https://img.shields.io/badge/Dokku-Repo-blue.svg)](https://github.com/dokku/dokku)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/d1ceward-on-dokku/minio_on_dokku/graphs/commit-activity)
 # Run Metabase on Dokku
