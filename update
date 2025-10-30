@@ -27,11 +27,11 @@ sed -i "s#ARG METABASE_VERSION.*#ARG METABASE_VERSION=\"v${RELEASE}\"#" Dockerfi
 METABASE_BADGE="[![Metabase](https://img.shields.io/badge/Metabase-${RELEASE}-blue.svg)](https://github.com/metabase/metabase/releases/tag/v${RELEASE})"
 sed -i "s#\[\!\[Metabase\].*#${METABASE_BADGE}#" README.md
 
-# # Push changes
-# git add Dockerfile README.md
-# git commit -m "Update to n8n version ${RELEASE}"
-# git push origin master
+# Push changes
+git add Dockerfile README.md
+git commit -m "Update to n8n version ${RELEASE}"
+git push origin master
 
-# # Create tag
-# git tag $RELEASE
-# git push --tags
+# Create tag
+git tag $RELEASE
+git push --tags
