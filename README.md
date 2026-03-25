@@ -60,7 +60,7 @@ dokku domains:set metabase metabase.example.com
 Map the internal port 3000 to the external port 80:
 
 ```bash
-dokku proxy:ports-set metabase http:80:3000
+dokku ports:set metabase http:80:3000
 ```
 
 ### 4. Deploy the App
